@@ -21,7 +21,46 @@ public class StringUtils {
    */
   public static boolean checkMatching(String str) {
     Stack<Character> parens = new LinkedStack<Character>();
-    return false;       // STUB
+    char top;
+    try {
+      for(int i = 0; i < str.length(); i++) {
+        if (str.charAt(i) == '(') {
+          parens.push('(');
+        } else if (str.charAt(i) == '[') {
+          parens.push('[');
+        } else if (str.charAt(i) == '{') {
+          parens.push('{');
+        } else if (str.charAt(i) == '<') {
+          parens.push('<');
+        } else if (str.charAt(i) == ')') {
+          top = parens.pop();
+          if (top != '(') {
+            throw new Exception("Incorrect parentheses type");
+          }
+        } else if (str.charAt(i) == ']') {
+          top = parens.pop();
+          if (top != '[') {
+            throw new Exception("Incorrect parentheses type");
+          }
+        } else if (str.charAt(i) == '}') {
+          top = parens.pop();
+          if (top != '{') {
+            throw new Exception("Incorrect parentheses type");
+          }
+        } else if (str.charAt(i) == '>') {
+          top = parens.pop();
+          if (top != '<') {
+            throw new Exception("Incorrect parentheses type");
+          }
+        } // if / else
+      }
+      if (!(parens.isEmpty())) {
+        return false;
+      } // if
+      return true;
+    } catch (Exception e) {
+      return false;
+    } // try / catch
   } // checkMatching
 } // class StringUtils    
 
