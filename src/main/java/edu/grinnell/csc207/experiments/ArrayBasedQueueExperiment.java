@@ -1,5 +1,7 @@
 package edu.grinnell.csc207.experiments;
 
+import java.io.PrintWriter;
+import java.util.Iterator;
 import edu.grinnell.csc207.linear.ArrayBasedQueue;
 import edu.grinnell.csc207.linear.ReportingLinearStructure;
 
@@ -36,7 +38,7 @@ public class ArrayBasedQueueExperiment {
     // should be empty
     expt.isEmpty();
 
-    /*
+    
     // It's always good to see what happens after you've cleared
     // out a structure. So add a few more elements.
     // We'll leave this test until we've worked out some kinks (Dave?)
@@ -50,9 +52,9 @@ public class ArrayBasedQueueExperiment {
     expt.get();
     // And we're back down to the empty queue
     expt.isEmpty();
-    */
+    
 
-    /*
+    
     // An iteration experiment, once we've workd out some kinks (Ray?)
     expt.put("a");
     expt.put("b");
@@ -63,13 +65,20 @@ public class ArrayBasedQueueExperiment {
     expt.get();
     expt.get();
     expt.get();
-     */
+     
     
-    /*
+    
     // Future tests, once we've worked out some more kinks (Pete
     // and Mick?)
     LinearStructureExperiment.expt01(new ArrayBasedQueue<String>(8), "size08.");
     LinearStructureExperiment.expt01(new ArrayBasedQueue<String>(4), "size04.");
-    */
+    PrintWriter pen = new PrintWriter(System.out, true);
+    ArrayBasedQueue<String> abq = new ArrayBasedQueue<String>(5);
+    abq.put("hi");
+    abq.put("bye");
+    Iterator<String> a = abq.iterator();
+    while (a.hasNext()) {
+      pen.println(a.next());
+    }
   } // main(String[])
 } // class ArrayBasedQueueExperiment

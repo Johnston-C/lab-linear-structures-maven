@@ -29,6 +29,11 @@ public class ArrayBasedQueue<T> implements Queue<T> {
    */
   int size;
 
+  /**
+   * The index at the end of the queue.
+   */
+  int back;
+
   // +--------------+----------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -59,7 +64,7 @@ public class ArrayBasedQueue<T> implements Queue<T> {
 
   @Override
   public boolean isFull() {
-    return this.back() >= this.values.length;
+    return this.size >= this.values.length;
   } // isFull()
 
   @Override
@@ -67,7 +72,7 @@ public class ArrayBasedQueue<T> implements Queue<T> {
     if (this.isFull()) {
       throw new Exception("no more room!");
     } // this.isFull()
-    this.values[this.back()] = val;
+    this.values[this.getBack()] = val;
     ++this.size;
   } // put(T)
 
@@ -77,8 +82,9 @@ public class ArrayBasedQueue<T> implements Queue<T> {
       throw new Exception("empty");
     } // if empty
     // Grab and clear the element at the front of the queue
-    T result = this.values[this.front];
-    this.values[this.front++] = null;
+    T result = this.values[getFront()];
+    this.values[getFront()] = null;
+    this.front++;
     // We're removing an element, so decrement the size
     --this.size;
     // And we're done
@@ -111,12 +117,14 @@ public class ArrayBasedQueue<T> implements Queue<T> {
   // +----------------+--------------------------------------------------
   // | Helper Methods |
   // +----------------+
-
+  int getFront (){
+    return front%values.length;
+  }
   /**
    * Get the index of the back of the queue. The back is where we add the next element.
    */
-  int back() {
-    return this.size;
+  int getBack() {
+    return (front+size)%values.length;
   } // back()
 
 } // class ArrayBasedQueue<T>
@@ -127,6 +135,9 @@ class ArrayBasedQueueIterator<T> implements Iterator<T> {
   // | Fields |
   // +--------+
 
+  ArrayBasedQueue<T> abq;
+  int i;
+
   // +--------------+----------------------------------------------------
   // | Constructors |
   // +--------------+
@@ -134,8 +145,9 @@ class ArrayBasedQueueIterator<T> implements Iterator<T> {
   /**
    * Create a new iterator.
    */
-  public ArrayBasedQueueIterator(ArrayBasedQueue<T> q) {
-    // STUB
+  public ArrayBasedQueueIterator(ArrayBasedQueue<T> abq) {
+    this.abq = abq;
+    this.i = 0;
   } // ArrayBasedQueueIterator
 
   // +---------+---------------------------------------------------------
@@ -148,13 +160,12 @@ class ArrayBasedQueueIterator<T> implements Iterator<T> {
       throw new NoSuchElementException("no elements remain");
     } // if no elements
     // STUB
-    throw new NoSuchElementException("unimplemented");
+    return this.abq.values[(this.i++ + this.abq.getFront()) % this.abq.values.length];
   } // next()
 
   @Override
   public boolean hasNext() {
-    // STUB
-    return false;
+    return this.i < this.abq.size;
   } // hasNext()
 
   @Override
